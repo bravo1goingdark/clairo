@@ -1,0 +1,36 @@
+
+
+services:
+  mysql :
+    image: mysql
+    container_name: clairo-mysql
+    environment:
+      MYSQL_DB : clairo
+      MYSQL_USER : clairo-admin
+      MYSQL_PASSWORD : clairo-admin
+      MYSQL_ROOT_PASSWORD : root
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: true
+
+  prom :
+    container_name: clairo-prometheus
+    image : prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+
+volumes:
+  mysql-data:
