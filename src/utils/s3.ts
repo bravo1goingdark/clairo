@@ -1,4 +1,4 @@
-import {S3Client , PutObjectCommand} from "@aws-sdk/client-s3"
+import {S3Client} from "@aws-sdk/client-s3"
 import "dotenv/config.js"
 
 const s3Client : S3Client = new S3Client({
@@ -8,10 +8,5 @@ const s3Client : S3Client = new S3Client({
         secretAccessKey : process.env.AWS_SECRET_ACCESS_KEY || " "
     }
 });
-
-const uploadToS3 = async () => {
-
-
-}
 
 export default  s3Client;

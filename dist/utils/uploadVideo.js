@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-const prisma = new PrismaClient();
 import s3Client from "./s3.js";
 export const uploadVideo = async (S3InputVideo) => {
     try {

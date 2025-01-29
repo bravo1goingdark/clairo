@@ -1,9 +1,7 @@
-import {PrismaClient} from "@prisma/client";
 import {PutObjectCommand} from "@aws-sdk/client-s3";
-const prisma = new PrismaClient();
 import s3Client from "./s3.js";
 
-export const uploadVideo = async (S3InputVideo :{bucket: string, key: string, body: Buffer, fileType: string}) => {
+export const uploadVideo = async (S3InputVideo :{bucket: string, key: string, body: Buffer, fileType: string}) : Promise<void> => {
     try {
         await s3Client.send(new PutObjectCommand({
             Bucket : S3InputVideo.bucket,

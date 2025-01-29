@@ -58,7 +58,7 @@ videoRouter.post(
             });
 
             response.write(`event: complete\ndata: ${JSON.stringify({msg: "Video uploaded successfully"})}\n\n`);
-            response.end();
+            response.status(201).end();
         } catch (error) {
             console.error("Video upload error:", error);
             response.status(400).json({
