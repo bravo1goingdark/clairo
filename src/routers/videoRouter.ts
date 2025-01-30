@@ -6,6 +6,7 @@ import {uploadCounter} from "../monitoring/monitorCounter.js";
 import s3Client from "../utils/s3.js";
 import {Progress, Upload} from "@aws-sdk/lib-storage";
 import {ResponseSkeleteon} from "../@types/user.js";
+import {deleteVideo} from "../utils/uploadVideo";
 
 const prisma: PrismaClient = new PrismaClient();
 const upload: Multer = multer();
@@ -55,6 +56,11 @@ videoRouter.post(
                         },
                     },
                 },
+            });
+            
+            await deleteVideo({
+                bucket : process.env.AWS_S3_UN_PROCESSED_BUCKET!,
+                key : uniqS3Key
             });
 
             response.write(`event: complete\ndata: ${JSON.stringify({msg: "Video uploaded successfully"})}\n\n`);
