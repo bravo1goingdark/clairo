@@ -29,7 +29,6 @@ model Video {
   id               String   @id @unique @default(cuid())
   s3Key            String?
   resolutions      String
-  processedURLs    Json?
   s3UnprocessedKey String
   uploadedAt       DateTime @default(now())
   userId           Int

@@ -1,14 +1,15 @@
 import kafka from "./client.js";
 import {Consumer, EachMessagePayload} from "kafkajs";
 import {Resolution} from "../@types/resolution";
+import {runNewTask} from "../utils/runECS.js";
 
 
 const consumer: Consumer = kafka.consumer({groupId: "transcoder-group"});
 
-const resolutions : Resolution[] = [
-    { width: 1920, height: 1080, label: "1080p" },
-    { width: 1280, height: 720, label: "720p" },
-    { width: 854, height: 480, label: "480p" },
+const resolutions: Resolution[] = [
+    {width: 1920, height: 1080, label: "1080p"},
+    {width: 1280, height: 720, label: "720p"},
+    {width: 854, height: 480, label: "480p"},
 ];
 
 const s3EventConsumer: () => Promise<void> = async (): Promise<void> => {
@@ -22,8 +23,7 @@ const s3EventConsumer: () => Promise<void> = async (): Promise<void> => {
         await consumer.run({
             eachMessage: async ({message}: EachMessagePayload): Promise<void> => {
                 const {bucket, key} = JSON.parse(message.value?.toString() || "{}");
-
-
+                await runNewTask(bucket, key);
             }
         });
 
@@ -31,5 +31,6 @@ const s3EventConsumer: () => Promise<void> = async (): Promise<void> => {
         await consumer.disconnect();
         console.error(error)
     }
-
 }
+
+export default s3EventConsumer;

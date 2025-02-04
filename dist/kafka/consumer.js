@@ -1,4 +1,5 @@
 import kafka from "./client.js";
+import { runNewTask } from "../utils/runECS.js";
 const consumer = kafka.consumer({ groupId: "transcoder-group" });
 const resolutions = [
     { width: 1920, height: 1080, label: "1080p" },
@@ -15,6 +16,7 @@ const s3EventConsumer = async () => {
         await consumer.run({
             eachMessage: async ({ message }) => {
                 const { bucket, key } = JSON.parse(message.value?.toString() || "{}");
+                await runNewTask(bucket, key);
             }
         });
     }
@@ -23,3 +25,4 @@ const s3EventConsumer = async () => {
         console.error(error);
     }
 };
+export default s3EventConsumer;
