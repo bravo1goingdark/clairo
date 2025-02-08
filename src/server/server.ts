@@ -5,6 +5,7 @@ import {requestCounter} from "../monitoring/monitorCounter.js";
 import cors from "cors";
 import userRouter from "../routers/userRouter.js";
 import videoRouter from "../routers/videoRouter.js";
+import {latencyMiddleware} from "../monitoring/monitorHistogram";
 
 client.collectDefaultMetrics({
     eventLoopMonitoringPrecision : 10000
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(requestCounter);
+app.use(latencyMiddleware);
 app.use(userRouter);
 app.use(videoRouter);
 
